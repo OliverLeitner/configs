@@ -3,26 +3,29 @@ autocmd GUIEnter * simalt ~x "maximize to fullscreen
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-""set rtp+=C:/tools/vim/plugins/Vundle.vim
-"call vundle#begin()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 ""call vundle#begin('c:/tools/vim/plugins/')
-""Plugin 'VundleVim/Vundle.vim'
-""Plugin 'will133/vim-dirdiff'
-"Plugin 'leafgarland/typescript-vim'
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'will133/vim-dirdiff'
+Plugin 'tpope/vim-fugitive'
+Plugin 'leafgarland/typescript-vim'
 ""Plugin 'heavenshell/vim-tslint'
-"Plugin 'mattn/emmet-vim'
-"Plugin 'ervandew/supertab'
-"Plugin 'vim-airline/vim-airline'
-"Plugin 'vim-airline/vim-airline-themes'
-"Plugin 'vim-syntastic/syntastic'
-"Plugin 'ap/vim-css-color'
-"Plugin 'kien/ctrlp.vim'
-"Plugin 'PProvost/vim-ps1.git'
+Plugin 'mattn/emmet-vim'
+Plugin 'ervandew/supertab'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'ap/vim-css-color'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'kien/ctrlp.vim'
+"Plugin 'rust-lang/rust.vim'
+Plugin 'PProvost/vim-ps1.git'
 
 " let Vundle manage Vundle, required
 " All of your Plugins must be added before the following line
-""call vundle#end() " required
+call vundle#end() " required
 filetype plugin indent on
 syntax on
 set ruler
@@ -95,6 +98,7 @@ set scrolloff=999               " keep 4 lines off the edges of the screen when 
 set hlsearch                    " highlight search terms
 set incsearch                   " show search matches as you type
 
+
 " white space characters
 set nolist
 set listchars=eol:$,tab:.\ ,trail:.,extends:>,precedes:<,nbsp:_
@@ -109,13 +113,18 @@ inoremap <C-S> <C-O>:update<CR>
 
 set termencoding=utf-8
 set encoding=utf-8
-colorscheme desert
+colorscheme predawn "github monokain rainbow_night Monokai
 
 " read only mode per default
 "set nomodifiable
 
 "i prefer , as my leader key
 let mapleader=","
+
+"clear search on pressing ctrl-l
+nnoremap <C-l>h :noh<CR>
+inoremap <C-l>h :noh<CR>
+vnoremap <C-l>h :noh<CR>
 
 " Tab navigation like Firefox.
 nnoremap <C-S-tab> :tabprevious<CR>
@@ -134,17 +143,23 @@ if has('gui_running')
     set guioptions-=L  "remove left-hand scroll bar
 endif
 
+" https://github.com/alacritty/alacritty/issues/109
+if exists('+termguicolors')
+    let &t_8f="\<Esc>[38;2;%lu;%lu%lum"
+    let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
 " Behaviour
 set history=1000                " remember more commands and search history
 set undolevels=1000             " use many muchos levels of undo
 if v:version >= 730
     set undofile                " keep a persistent backup file
-    set undodir=c:/tools/vim/tmp/undo,c:/tools/vim/tmp
+    set undodir=~/.vim/tmp/undo,~/.vim/tmp
 endif
 set nobackup                    " do not keep backup files, it's 70's style cluttering
 set noswapfile                  " do not write annoying intermediate swap files,
 "    who did ever restore from swap files anyway?
-set directory=c:/tools/vim/tmp
+set directory=~/.vim/tmp
 " store swap files in one of these directories
 "    (in case swapfile is ever turned on)
 set viminfo='20,\"80            " read/write a .viminfo file, don't store more
@@ -163,8 +178,8 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 "let g:syntastic_typescript_checkers = ['tslint']
@@ -202,7 +217,7 @@ endfunction
 
 "ctrl+p ignore certain directories
 let g:ctrlp_custom_ignore = {
-            \ 'dir': '\.git\|dist$|libs$|node_$|ch-$|\.svn\|\.idea\|\.code\|\.vscode\|'
+            \ 'dir': 'tmp|\.git\|dist$|libs$|node_$|ch-$|\.svn\|\.idea\|\.code\|\.vscode\|'
 \}
 
 "new stuff
@@ -240,5 +255,8 @@ function MyDiff()
     \  " > " . v:fname_out
 endfunction
 "# End DirDiff settings
+
+"rust codepen
+let g:rust_clip_command = 'xclip -selection clipboard'
 
 packload
