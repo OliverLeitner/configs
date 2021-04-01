@@ -20,6 +20,8 @@ Plugin 'vim-syntastic/syntastic'
 Plugin 'ap/vim-css-color'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'kien/ctrlp.vim'
+Plugin 'rking/ag.vim'
+Plugin 'mileszs/ack.vim'
 "Plugin 'rust-lang/rust.vim'
 Plugin 'PProvost/vim-ps1.git'
 
@@ -258,5 +260,12 @@ endfunction
 
 "rust codepen
 let g:rust_clip_command = 'xclip -selection clipboard'
+
+"ag search thingy
+"let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
+
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 packload
